@@ -17,7 +17,7 @@ services:
     ports:
       - 2181:2181/tcp
     volumes:
-      - ../jolokia:/opt/jolokia
+      - ./jolokia:/opt/jolokia
     environment:
       env: "docker"
       label: "testing"
@@ -47,7 +47,7 @@ services:
     depends_on:
       - zookeeper
     volumes:
-      - ../jolokia:/opt/jolokia
+      - ./jolokia:/opt/jolokia
     environment:
       env: "docker"
       label: "testing"
@@ -76,11 +76,11 @@ services:
       - zookeeper
       - kafka
     volumes:
-      - ../jolokia:/opt/jolokia
-      - ../splunk-kafka-connect:/etc/kafka-connect/jars/splunk-kafka-connect
-      - ../kafka-connect-datagen/confluentinc-kafka-connect-datagen:/etc/kafka-connect/jars/confluentinc-kafka-connect-datagen
-      - ../kafka-connect-syslog/confluentinc-kafka-connect-syslog:/etc/kafka-connect/jars/confluentinc-kafka-connect-syslog
-      - ../kafka-connect:/etc/kafka-connect/config
+      - ./jolokia:/opt/jolokia
+      - ./splunk-kafka-connect:/etc/kafka-connect/jars/splunk-kafka-connect
+      - ./kafka-connect-datagen/confluentinc-kafka-connect-datagen:/etc/kafka-connect/jars/confluentinc-kafka-connect-datagen
+      - ./kafka-connect-syslog/confluentinc-kafka-connect-syslog:/etc/kafka-connect/jars/confluentinc-kafka-connect-syslog
+      - ./kafka-connect:/etc/kafka-connect/config
     environment:
       env: "docker"
       label: "testing"
@@ -105,7 +105,7 @@ services:
     depends_on:
       - kafka
     volumes:
-      - ../jolokia:/opt/jolokia
+      - ./jolokia:/opt/jolokia
     environment:
       env: "docker"
       label: "testing"
@@ -132,7 +132,7 @@ services:
     depends_on:
       - kafka
     volumes:
-      - ../jolokia:/opt/jolokia
+      - ./jolokia:/opt/jolokia
     environment:
       env: "docker"
       label: "testing"
@@ -159,7 +159,7 @@ services:
     depends_on:
       - kafka
     volumes:
-      - ../jolokia:/opt/jolokia
+      - ./jolokia:/opt/jolokia
     environment:
       env: "docker"
       label: "testing"
@@ -195,7 +195,7 @@ services:
       - zookeeper
       - kafka
     volumes:
-      - ../telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /sys:/rootfs/sys:ro
       - /proc:/rootfs/proc:ro
@@ -221,8 +221,8 @@ services:
       - zookeeper
       - kafka
     volumes:
-      - ../burrow/config:/etc/burrow/
-      - ../burrow/tmp:/var/tmp/burrow
+      - ./burrow/config:/etc/burrow/
+      - ./burrow/tmp:/var/tmp/burrow
     environment:
       env: "docker"
       label: "testing"
@@ -244,7 +244,7 @@ services:
       - zookeeper
       - kafka
     volumes:
-      - ../kafka-monitor:/usr/local/share/kafka-monitor
+      - ./kafka-monitor:/usr/local/share/kafka-monitor
     command: "/opt/kafka-monitor/bin/kafka-monitor-start.sh /usr/local/share/kafka-monitor/kafka-monitor.properties"
     environment:
       env: "docker"
@@ -307,8 +307,8 @@ services:
       - schema-registry
       - kafka-create-topics
     volumes:
-      - ../jolokia:/opt/jolokia
-      - ../kafka-streams:/opt/kafka-streams
+      - ./jolokia:/opt/jolokia
+      - ./kafka-streams:/opt/kafka-streams
     # Control startup order similarly to the "kafka-create-topics" container above.
     # Note: The container's `run` script will perform the same readiness checks
     # for Kafka and Confluent Schema Registry, but that's ok because they complete fast.
@@ -357,6 +357,6 @@ services:
       SPLUNK_START_ARGS: "--accept-license"
       SPLUNK_PASSWORD: "password"
     volumes:
-      - ../splunk/TA-telegraf-kafka:/opt/splunk/etc/apps/TA-telegraf-kafka
-      - ../splunk/container_share:/opt/splunk/container_share
-      - ../splunk/TA-docker-kafka:/opt/splunk/etc/apps/TA-docker-kafka
+      - ./splunk/TA-telegraf-kafka:/opt/splunk/etc/apps/TA-telegraf-kafka
+      - ./splunk/container_share:/opt/splunk/container_share
+      - ./splunk/TA-docker-kafka:/opt/splunk/etc/apps/TA-docker-kafka
