@@ -1,5 +1,6 @@
-version: '2'
+#!/usr/bin/env -S docker-compose -p splunk-kafka -f
 
+version: '2'
 
 services:
 
