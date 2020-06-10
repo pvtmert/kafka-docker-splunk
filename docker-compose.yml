@@ -173,7 +173,7 @@ services:
 
   telegraf:
     image: telegraf:latest
-    restart: always
+    restart: on-failure
     privileged: true
     environment:
       env: "docker"
@@ -206,7 +206,7 @@ services:
 
   burrow:
     image: guilhemmarchand/burrow:latest
-    restart: always
+    restart: "no"
     hostname: burrow
     logging:
       driver: splunk
