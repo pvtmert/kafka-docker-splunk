@@ -7,13 +7,13 @@ services:
     logging:
       driver: splunk
       options:
+        env-regex: ".+"
         splunk-token: "11113ee7-919e-4dc3-bde6-da10a2ac6709"
         splunk-url: "https://splunk:8088"
         splunk-insecureskipverify: "true"
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:kafka:zookeeper"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-        env-regex: .+
     ports:
       - 2181:2181/tcp
     volumes:
@@ -35,13 +35,13 @@ services:
     logging:
       driver: splunk
       options:
+        env-regex: ".+"
         splunk-token: "11113ee7-919e-4dc3-bde6-da10a2ac6709"
         splunk-url: "https://splunk:8088"
         splunk-insecureskipverify: "true"
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:kafka:broker"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-        env-regex: .+
     ports:
       - "9092:9092"
     depends_on:
@@ -63,13 +63,13 @@ services:
     logging:
       driver: splunk
       options:
+        env-regex: ".+"
         splunk-token: "11113ee7-919e-4dc3-bde6-da10a2ac6709"
         splunk-url: "https://splunk:8088"
         splunk-insecureskipverify: "true"
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:kafka:connect"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-        env-regex: .+
     ports:
       - "8082:8082"
     depends_on:
@@ -93,13 +93,13 @@ services:
     logging:
       driver: splunk
       options:
+        env-regex: ".+"
         splunk-token: "11113ee7-919e-4dc3-bde6-da10a2ac6709"
         splunk-url: "https://splunk:8088"
         splunk-insecureskipverify: "true"
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:confluent:schema-registry"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-        env-regex: .+
     ports:
       - "8081:8081"
     depends_on:
@@ -120,13 +120,13 @@ services:
     logging:
       driver: splunk
       options:
+        env-regex: ".+"
         splunk-token: "11113ee7-919e-4dc3-bde6-da10a2ac6709"
         splunk-url: "https://splunk:8088"
         splunk-insecureskipverify: "true"
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:confluent:ksql-server"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-        env-regex: .+
     ports:
       - "8090:8090"
     depends_on:
@@ -147,15 +147,15 @@ services:
     logging:
       driver: splunk
       options:
+        env-regex: ".+"
         splunk-token: "11113ee7-919e-4dc3-bde6-da10a2ac6709"
         splunk-url: "https://splunk:8088"
         splunk-insecureskipverify: "true"
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:confluent:kafka-rest"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-        env-regex: .+
     ports:
-      - "18089:18089"
+      - "8091:8091"
     depends_on:
       - kafka
     volumes:
@@ -166,6 +166,7 @@ services:
       KAFKA_REST_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_REST_SCHEMA_REGISTRY_URL: "http://schema-registry:8083"
       KAFKAREST_OPTS: "-javaagent:/opt/jolokia/jolokia-jvm-1.6.0-agent.jar=port=8778,host=0.0.0.0"
+      KAFKA_REST_LISTENERS: "http://0.0.0.0:8091"
       KAFKA_REST_HOST_NAME: "kafka-rest"
 
   telegraf:
@@ -184,13 +185,13 @@ services:
     logging:
       driver: splunk
       options:
+        env-regex: ".+"
         splunk-token: "11113ee7-919e-4dc3-bde6-da10a2ac6709"
         splunk-url: "https://splunk:8088"
         splunk-insecureskipverify: "true"
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:telegraf"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-        env-regex: .+
     depends_on:
       - zookeeper
       - kafka
@@ -208,13 +209,13 @@ services:
     logging:
       driver: splunk
       options:
+        env-regex: ".+"
         splunk-token: "11113ee7-919e-4dc3-bde6-da10a2ac6709"
         splunk-url: "https://splunk:8088"
         splunk-insecureskipverify: "true"
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:burrow"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-        env-regex: .+
     ports:
       - 9002:9002
     depends_on:
@@ -233,13 +234,13 @@ services:
     logging:
       driver: splunk
       options:
+        env-regex: ".+"
         splunk-token: "11113ee7-919e-4dc3-bde6-da10a2ac6709"
         splunk-url: "https://splunk:8088"
         splunk-insecureskipverify: "true"
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:kafka-monitor"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-        env-regex: .+
     depends_on:
       - zookeeper
       - kafka
