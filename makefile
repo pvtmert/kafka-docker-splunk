@@ -1,15 +1,15 @@
 #!/usr/bin/env make -f
 
-up:
+start:
 	docker-compose up --no-start
+	docker-compose start splunk
 	docker-compose start zookeeper
 	sleep 10
 	docker-compose start kafka
 	sleep 10
 	docker-compose start kafka-connect
-	sleep 5
-	sleep 10
+	sleep 15
 	docker-compose start
 
-down:
+stop:
 	docker-compose down -v
