@@ -201,54 +201,54 @@ services:
       - /proc:/rootfs/proc:ro
       - /etc:/rootfs/etc:ro
 
-  burrow:
-    image: guilhemmarchand/burrow:latest
-    restart: always
-    hostname: burrow
-    logging:
-      driver: splunk
-      options:
-        splunk-token: "11113ee7-919e-4dc3-bde6-da10a2ac6709"
-        splunk-url: "https://splunk:8088"
-        splunk-insecureskipverify: "true"
-        splunk-verify-connection: "false"
-        splunk-sourcetype: "docker:burrow"
-        tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-        env-regex: .+
-    ports:
-      - 9002:9002
-    depends_on:
-      - zookeeper
-      - kafka
-    volumes:
-      - ../burrow/config:/etc/burrow/
-      - ../burrow/tmp:/var/tmp/burrow
-    environment:
-      env: "docker"
-      label: "testing"
+  # burrow:
+  #   image: guilhemmarchand/burrow:latest
+  #   restart: always
+  #   hostname: burrow
+  #   logging:
+  #     driver: splunk
+  #     options:
+  #       splunk-token: "11113ee7-919e-4dc3-bde6-da10a2ac6709"
+  #       splunk-url: "https://splunk:8088"
+  #       splunk-insecureskipverify: "true"
+  #       splunk-verify-connection: "false"
+  #       splunk-sourcetype: "docker:burrow"
+  #       tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
+  #       env-regex: .+
+  #   ports:
+  #     - 9002:9002
+  #   depends_on:
+  #     - zookeeper
+  #     - kafka
+  #   volumes:
+  #     - ../burrow/config:/etc/burrow/
+  #     - ../burrow/tmp:/var/tmp/burrow
+  #   environment:
+  #     env: "docker"
+  #     label: "testing"
 
-  kafka-monitor:
-    image: guilhemmarchand/kafka-monitor:latest
-    hostname: kafka-monitor
-    logging:
-      driver: splunk
-      options:
-        splunk-token: "11113ee7-919e-4dc3-bde6-da10a2ac6709"
-        splunk-url: "https://splunk:8088"
-        splunk-insecureskipverify: "true"
-        splunk-verify-connection: "false"
-        splunk-sourcetype: "docker:kafka-monitor"
-        tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-        env-regex: .+
-    depends_on:
-      - zookeeper
-      - kafka
-    volumes:
-      - ../kafka-monitor:/usr/local/share/kafka-monitor
-    command: "/opt/kafka-monitor/bin/kafka-monitor-start.sh /usr/local/share/kafka-monitor/kafka-monitor.properties"
-    environment:
-      env: "docker"
-      label: "testing"
+  # kafka-monitor:
+  #   image: guilhemmarchand/kafka-monitor:latest
+  #   hostname: kafka-monitor
+  #   logging:
+  #     driver: splunk
+  #     options:
+  #       splunk-token: "11113ee7-919e-4dc3-bde6-da10a2ac6709"
+  #       splunk-url: "https://splunk:8088"
+  #       splunk-insecureskipverify: "true"
+  #       splunk-verify-connection: "false"
+  #       splunk-sourcetype: "docker:kafka-monitor"
+  #       tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
+  #       env-regex: .+
+  #   depends_on:
+  #     - zookeeper
+  #     - kafka
+  #   volumes:
+  #     - ../kafka-monitor:/usr/local/share/kafka-monitor
+  #   command: "/opt/kafka-monitor/bin/kafka-monitor-start.sh /usr/local/share/kafka-monitor/kafka-monitor.properties"
+  #   environment:
+  #     env: "docker"
+  #     label: "testing"
 
   # This "container" is a workaround to pre-create topics for the Kafka Music application
   # # until we have a more elegant way to do that.
