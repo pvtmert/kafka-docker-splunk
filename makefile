@@ -9,6 +9,12 @@ start:
 	docker-compose start kafka
 	sleep 10
 	docker-compose start kafka-connect
+	sleep 10
+	docker-compose start schema-registry
+	sleep 10
+	docker-compose start kafka-rest
+	sleep 10
+	docker-compose start kafka-ksql
 	sleep 15
 	docker-compose start
 

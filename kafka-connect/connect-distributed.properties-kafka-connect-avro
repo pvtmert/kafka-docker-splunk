@@ -39,14 +39,14 @@ plugin.path=/etc/kafka-connect/jars
 
 group.id=kafka-connect-splunk-hec-sink
 config.storage.topic=__kafka-connect-splunk-task-configs
-config.storage.replication.factor=3
+config.storage.replication.factor=1
 
 offset.storage.topic=__kafka-connect-splunk-offsets
-offset.storage.replication.factor=3
-offset.storage.partitions=25
+offset.storage.replication.factor=1
+offset.storage.partitions=5
 
 status.storage.topic=__kafka-connect-splunk-statuses
-status.storage.replication.factor=3
+status.storage.replication.factor=1
 status.storage.partitions=5
 
 # These are provided to inform the user about the presence of the REST host and port configs
