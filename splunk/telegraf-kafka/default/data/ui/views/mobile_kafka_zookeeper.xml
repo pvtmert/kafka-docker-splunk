@@ -1,0 +1,230 @@
+<form hideEdit="False" isVisible="True" theme="dark">
+    <label>Kafka Zookeeper - Health</label>
+    <fieldset submitButton="false">
+    </fieldset>
+
+    <row>
+        <panel>
+            <title>Number of active nodes</title>
+            <single>
+                <search>
+                    <query>| mcatalog values(metric_name) where `telegraf_kafka_index` metric_name="zk_*.AvgRequestLatency" env=* label=* by env, label, jolokia_agent_url | stats count</query>
+                    <earliest>-5m</earliest>
+                    <latest>now</latest>
+                    <refresh>30s</refresh>
+                    <refreshType>delay</refreshType>
+                </search>
+                <option name="colorMode">block</option>
+                <option name="drilldown">all</option>
+                <option name="numberPrecision">0</option>
+                <option name="rangeColors">["0x006d9c","0x006d9c"]</option>
+                <option name="rangeValues">[0]</option>
+                <option name="refresh.display">progressbar</option>
+                <option name="underLabel">ZOOKEEPER SERVER</option>
+                <option name="useColors">1</option>
+            </single>
+        </panel>
+        <panel>
+            <title>Latency</title>
+            <single>
+                <search>
+                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` (metric_name="zk_*.AvgRequestLatency") env=* label=* by metric_name, jolokia_agent_url span=1s
+| streamstats current=f last(value) as "value_prev" by jolokia_agent_url, metric_name
+| eval metric=(value-value_prev)
+| fields _time, jolokia_agent_url, metric_name, metric
+| where metric>=0
+| stats avg(metric) as latency</query>
+                    <earliest>-5m</earliest>
+                    <latest>now</latest>
+                    <refresh>30s</refresh>
+                    <refreshType>delay</refreshType>
+                </search>
+                <option name="numberPrecision">0.00</option>
+                <option name="colorMode">block</option>
+                <option name="drilldown">none</option>
+                <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
+                <option name="rangeValues">[10]</option>
+                <option name="refresh.display">progressbar</option>
+                <option name="underLabel">AVERAGE LATENCY (millisecond)</option>
+                <option name="useColors">1</option>
+            </single>
+        </panel>
+        <panel>
+            <title>Outstanding requests</title>
+            <single>
+                <search>
+                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` (metric_name="zk_*.OutstandingRequests") env=* label=* by metric_name, jolokia_agent_url span=1s
+| streamstats current=f last(value) as "value_prev" by jolokia_agent_url, metric_name
+| eval metric=(value-value_prev)
+| fields _time, jolokia_agent_url, metric_name, metric
+| where metric>=0
+| stats avg(metric) as latency</query>
+                </search>
+                <option name="colorMode">block</option>
+                <option name="drilldown">none</option>
+                <option name="rangeColors">["0x53a051","0xdc4e41"]</option>
+                <option name="rangeValues">[10]</option>
+                <option name="refresh.display">progressbar</option>
+                <option name="underLabel">OUTSTANDING REQUESTS</option>
+                <option name="useColors">1</option>
+            </single>
+        </panel>
+    </row>
+
+    <row>
+        <panel>
+            <chart>
+                <title>Average latency (millisecond)</title>
+                <search>
+                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` (metric_name="zk_*.AvgRequestLatency") env=* label=* by metric_name, jolokia_agent_url span=1s
+| streamstats current=f last(value) as "value_prev" by jolokia_agent_url, metric_name
+| eval metric=(value-value_prev)
+| fields _time, jolokia_agent_url, metric_name, metric
+| where metric>=0
+| timechart span=5m avg(metric) as "Avg" by jolokia_agent_url</query>
+                    <earliest>-4h</earliest>
+                    <latest>now</latest>
+                    <sampleRatio>1</sampleRatio>
+                    <refresh>30s</refresh>
+                    <refreshType>delay</refreshType>
+                </search>
+                <option name="charting.chart">line</option>
+                <option name="charting.axisTitleX.visibility">collapsed</option>
+                <option name="charting.axisTitleY.visibility">collapsed</option>
+                <option name="charting.chart.nullValueMode">gaps</option>
+                <option name="charting.chart.showDataLabels">none</option>
+                <option name="charting.legend.placement">top</option>
+                <option name="charting.drilldown">all</option>
+            </chart>
+        </panel>
+        <panel>
+            <chart>
+                <title>Outstanding requests</title>
+                <search>
+                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` (metric_name="zk_*.OutstandingRequests") env=* label=* by metric_name, jolokia_agent_url span=1s
+| streamstats current=f last(value) as "value_prev" by jolokia_agent_url, metric_name
+| eval metric=(value-value_prev)
+| fields _time, jolokia_agent_url, metric_name, metric
+| where metric>=0
+| timechart span=5m avg(metric) as "Avg" by jolokia_agent_url</query>
+                    <earliest>-4h</earliest>
+                    <latest>now</latest>
+                    <sampleRatio>1</sampleRatio>
+                    <refresh>30s</refresh>
+                    <refreshType>delay</refreshType>
+                </search>
+                <option name="charting.chart">line</option>
+                <option name="charting.axisTitleX.visibility">collapsed</option>
+                <option name="charting.axisTitleY.visibility">collapsed</option>
+                <option name="charting.chart.nullValueMode">gaps</option>
+                <option name="charting.chart.showDataLabels">none</option>
+                <option name="charting.legend.placement">top</option>
+                <option name="charting.drilldown">all</option>
+            </chart>
+        </panel>
+        <panel>
+            <chart>
+                <title>Pending Sync</title>
+                <search>
+                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` (metric_name="zk_*.FsyncThresholdExceedCount") env=* label=* by metric_name, jolokia_agent_url span=1s
+| streamstats current=f last(value) as "value_prev" by jolokia_agent_url, metric_name
+| eval metric=(value-value_prev)
+| fields _time, jolokia_agent_url, metric_name, metric
+| where metric>=0
+| timechart span=5m avg(metric) as "Avg" by jolokia_agent_url</query>
+                    <earliest>-4h</earliest>
+                    <latest>now</latest>
+                    <sampleRatio>1</sampleRatio>
+                    <refresh>30s</refresh>
+                    <refreshType>delay</refreshType>
+                </search>
+                <option name="charting.chart">line</option>
+                <option name="charting.axisTitleX.visibility">collapsed</option>
+                <option name="charting.axisTitleY.visibility">collapsed</option>
+                <option name="charting.chart.nullValueMode">gaps</option>
+                <option name="charting.chart.showDataLabels">none</option>
+                <option name="charting.legend.placement">top</option>
+                <option name="charting.drilldown">all</option>
+            </chart>
+        </panel>
+    </row>
+
+    <row>
+        <panel>
+            <chart>
+                <title>Number Alive Connections</title>
+                <search>
+                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name="zk_*.NumAliveConnections" env=* label=* by metric_name, jolokia_agent_url span=1s
+| streamstats current=f last(value) as "value_prev" by jolokia_agent_url
+| eval metric=(value-value_prev)
+| fields _time, jolokia_agent_url, metric
+| where metric&gt;=0
+| timechart span=5m avg(metric) as num_alive_connections by jolokia_agent_url</query>
+                    <earliest>-4h</earliest>
+                    <latest>now</latest>
+                    <sampleRatio>1</sampleRatio>
+                    <refresh>30s</refresh>
+                    <refreshType>delay</refreshType>
+                </search>
+                <option name="charting.chart">line</option>
+                <option name="charting.axisTitleX.visibility">collapsed</option>
+                <option name="charting.axisTitleY.visibility">collapsed</option>
+                <option name="charting.chart.nullValueMode">gaps</option>
+                <option name="charting.chart.showDataLabels">none</option>
+                <option name="charting.legend.placement">top</option>
+                <option name="charting.drilldown">all</option>
+            </chart>
+        </panel>
+        <panel>
+            <chart>
+                <title>Packets received</title>
+                <search>
+                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name="zk_*.PacketsReceived" env=* label=* by metric_name, jolokia_agent_url span=1s
+| streamstats current=f last(value) as "value_prev" by jolokia_agent_url
+| eval metric=(value-value_prev)
+| fields _time, jolokia_agent_url, metric
+| where metric&gt;=0
+| timechart span=5m avg(metric) as packets_received by jolokia_agent_url</query>
+                    <earliest>-4h</earliest>
+                    <latest>now</latest>
+                    <sampleRatio>1</sampleRatio>
+                    <refresh>30s</refresh>
+                    <refreshType>delay</refreshType>
+                </search>
+                <option name="charting.chart">line</option>
+                <option name="charting.axisTitleX.visibility">collapsed</option>
+                <option name="charting.axisTitleY.visibility">collapsed</option>
+                <option name="charting.chart.nullValueMode">gaps</option>
+                <option name="charting.chart.showDataLabels">none</option>
+                <option name="charting.legend.placement">top</option>
+                <option name="charting.drilldown">all</option>
+            </chart>
+        </panel>
+        <panel>
+            <chart>
+                <title>Packets sent</title>
+                <search>
+                    <query>| mstats latest(_value) as value where `telegraf_kafka_index` metric_name="zk_*.PacketsSent" env=* label=* by metric_name, jolokia_agent_url span=1s
+| streamstats current=f last(value) as "value_prev" by jolokia_agent_url
+| eval metric=(value-value_prev)
+| fields _time, jolokia_agent_url, metric
+| where metric&gt;=0
+| timechart span=5m avg(metric) as packets_sent by jolokia_agent_url</query>
+                    <earliest>-4h</earliest>
+                    <latest>now</latest>
+                    <sampleRatio>1</sampleRatio>
+                    <refresh>30s</refresh>
+                    <refreshType>delay</refreshType>
+                </search>
+                <option name="charting.chart">line</option>
+                <option name="charting.axisTitleX.visibility">collapsed</option>
+                <option name="charting.axisTitleY.visibility">collapsed</option>
+                <option name="charting.chart.nullValueMode">gaps</option>
+                <option name="charting.chart.showDataLabels">none</option>
+                <option name="charting.legend.placement">top</option>
+                <option name="charting.drilldown">all</option>
+            </chart>
+        </panel>
+    </row>
+
+</form>
