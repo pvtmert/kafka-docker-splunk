@@ -16,8 +16,8 @@ services:
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:kafka:zookeeper"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-    ports:
-      - 2181:2181/tcp
+    expose:
+      - 2181/tcp
     volumes:
       - ./jolokia:/opt/jolokia
     environment:
@@ -44,8 +44,8 @@ services:
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:kafka:broker"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-    ports:
-      - "9092:9092"
+    expose:
+      - 9092/tcp
     depends_on:
       - zookeeper
     volumes:
@@ -72,8 +72,8 @@ services:
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:kafka:connect"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-    ports:
-      - "8082:8082"
+    expose:
+      - 8082/tcp
     depends_on:
       - zookeeper
       - kafka
@@ -102,8 +102,8 @@ services:
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:confluent:schema-registry"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-    ports:
-      - "8081:8081"
+    expose:
+      - 8081/tcp
     depends_on:
       - kafka
     volumes:
@@ -129,8 +129,8 @@ services:
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:confluent:ksql-server"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-    ports:
-      - "8090:8090"
+    expose:
+      - 8090/tcp
     depends_on:
       - kafka
     volumes:
@@ -156,8 +156,8 @@ services:
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:confluent:kafka-rest"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-    ports:
-      - "8091:8091"
+    expose:
+      - 8091/tcp
     depends_on:
       - kafka
     volumes:
@@ -218,8 +218,8 @@ services:
         splunk-verify-connection: "false"
         splunk-sourcetype: "docker:burrow"
         tag: "{{.ImageName}}/{{.Name}}/{{.ID}}"
-    ports:
-      - 9002:9002
+    expose:
+      - 9002/tcp
     depends_on:
       - zookeeper
       - kafka
@@ -296,8 +296,8 @@ services:
                        io.confluent.examples.streams.interactivequeries.kafkamusic.KafkaMusicExampleDriver \
                        kafka:9092 http://schema-registry:8081'"
     environment:
-      STREAMS_BOOTSTRAP_SERVERS: ignored
       STREAMS_SCHEMA_REGISTRY_PORT: ignored
+      STREAMS_BOOTSTRAP_SERVERS: ignored
       KAFKA_MUSIC_APP_REST_PORT: ignored
 
   # Runs the Kafka Music application.
@@ -328,7 +328,7 @@ services:
                        sleep 2 && \
                        /etc/confluent/docker/run'"
     ports:
-      - '7070:7070'
+      - 7070:7070/tcp
     environment:
       STREAMS_BOOTSTRAP_SERVERS: kafka:9092
       STREAMS_SCHEMA_REGISTRY_PORT: 8081
@@ -338,7 +338,7 @@ services:
     image: kafkamanager/kafka-manager:latest
     hostname: kafka-manager
     ports:
-      - "9000:9000"
+      - 9000:9000/tcp
     depends_on:
       - zookeeper
       - kafka
