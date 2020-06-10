@@ -14,7 +14,7 @@ start:
 	sleep 10
 	docker-compose start kafka-rest
 	sleep 10
-	docker-compose start kafka-ksql
+	docker-compose start ksql-server
 	sleep 15
 	docker-compose start
 
