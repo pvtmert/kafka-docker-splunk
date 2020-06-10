@@ -359,6 +359,8 @@ services:
       SPLUNK_START_ARGS: "--accept-license"
       SPLUNK_PASSWORD: "password"
     volumes:
-      - ./splunk/TA-telegraf-kafka:/opt/splunk/etc/apps/TA-telegraf-kafka
       - ./splunk/container_share:/opt/splunk/container_share
+      - ./splunk/telegraf-kafka:/opt/splunk/etc/apps/telegraf-kafka
       - ./splunk/TA-docker-kafka:/opt/splunk/etc/apps/TA-docker-kafka
+      - ./splunk/TA-telegraf-kafka:/opt/splunk/etc/apps/TA-telegraf-kafka
+      - ./splunk/TA-kafka-streaming-platform:/opt/splunk/etc/apps/TA-kafka-streaming-platform
