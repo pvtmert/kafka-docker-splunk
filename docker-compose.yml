@@ -250,7 +250,7 @@ services:
       env: "docker"
       label: "testing"
 
-  This "container" is a workaround to pre-create topics for the Kafka Music application
+  # This "container" is a workaround to pre-create topics for the Kafka Music application
   # until we have a more elegant way to do that.
   kafka-create-topics:
     image: confluentinc/cp-kafka:5.1.0
@@ -275,7 +275,7 @@ services:
       KAFKA_BROKER_ID: ignored
       KAFKA_ZOOKEEPER_CONNECT: ignored
 
-  Continuously generates input data for the Kafka Music application.
+  # Continuously generates input data for the Kafka Music application.
   kafka-music-data-generator:
     image: confluentinc/kafka-streams-examples:5.0.0
     # hostname: kafka-music-data-generator
@@ -297,7 +297,7 @@ services:
       STREAMS_SCHEMA_REGISTRY_PORT: ignored
       KAFKA_MUSIC_APP_REST_PORT: ignored
 
-  Runs the Kafka Music application.
+  # Runs the Kafka Music application.
   kafka-music-application:
     image: confluentinc/kafka-streams-examples:5.0.0
     # hostname: kafka-music-application
